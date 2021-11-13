@@ -1,4 +1,4 @@
-# Ai반 2기 python 중급반 - 1주차 정규수업(16:30~18:30) mission
+# Ai반 2기 python 중급반 - 2주차 정규수업(16:30~18:30) mission
 '''
 [수업을 시작하기 전에!]
 1. 웨일ON으로 원격 회의실 접속하기
@@ -8,68 +8,18 @@
 5. 수업시간 집중~~~!! 딴 짓! 멈춰~~~~~!
 
 [저번주 복습]
-여러가지 반복문 Mission 수행: 미디어아트2, Up-down game, 무지개 그리기
+1. 함수의 개념과 특징
+2. 함수 만들기 & 호출하기
+3. 여라가지 함수: 입력과 반환값의 유무에 따라
 '''
-
 
 # [함수]
-##: 여러개의 명령어들을 묶어서 한꺼번에 처리할 수 있도록 만든 하나의 명령어 묶음에 이름을 붙인 것.
-## 문법: def 함수이름(매개변수1, 매개변수2, ...):
-##         명령어 블럭
-##         return 반환값
-
-## docstring: 함수에 대한 설명을 나타내는 문장 - 아래 함수들 생성시 doc-string 작성해주기
-
-## 연습문제1: 입력X, 출력X인 함수
-## >> 함수를 호출하면 별모양을 그리는 DrawStar_100()
-
-
-
-import turtle as t
-def DrawStar_100():
-    for i in range(1000):
-        t.left(100)
-        t.backward(100)
-        t.left(72)
-
-DrawStar_100()
-t.mainloop()
-
-## 연습문제2: 입력O, 출력X인 함수
-## >> 한 변의 길이를 입력하면, 그 한변의 길이를 가지는 별을 그리는 DrawStar()
-'''
-import turtle
-<DrawStar() 함수 정의해주기> 
-
-win = turtle.Screen()
-<DrawStar()함수 호출>
-win.mainloop()
-'''
-## 연습문제3: 입력X, 출력O인 함수
-## >> 1~100까지 랜덤한 정수 1개를 반환하는 getRandomNum()
-'''
-import random
-
-
-def getRandomNum():
-    return random.randint(1,100)
-
-num = getRandomNum()
-print(num)
-'''
-## 연습문제4: 입력O, 출력O인 함수
-## >> a,b를 입력하면 두 수의 합을 반환하는 add()
-'''
-def add(x, y):
-    return x + y
-
-X = add(18,28)
-print(X)
-
-'''
 ## 함수 Mission: 앞서 반복문 Mission4에서 그린 무지개를 "함수"로 만들어보자
 ## 조건은 ppt '함수 Mission' 참고
 '''
+import turtle
+
+
 # Mission: draw_rainbow() 함수 정의하기
 def draw_rainbow(t, rainbow_size, pen_size, x, y):
     """
@@ -81,22 +31,34 @@ def draw_rainbow(t, rainbow_size, pen_size, x, y):
     :param y: 무지개가 그려질 y좌표
     """
     # 설정(작성할 부분1)
-
+    t.pensize(pen_size)  # 펜 굵기
+    rainbow_color = ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'purple']  # 활용할 색상 지정
 
     # 그리기(작성할 부분2)
+    for i in range(7):
+        t.setheading(90)
+        t.penup()
+        t.setpos(x+rainbow_size-(pen_size*i),y)
+        t.pencolor(rainbow_color[i])
+        t.pendown()
+        t.circle(rainbow_size-(pen_size*i),180)
 
-
-import turtle
 
 win = turtle.Screen()
-win.screensize(1000,1000)
+win.screensize(1000, 1000)
 t = turtle.Turtle('turtle')
 t.speed(0)
 
+
+
 # 이제 draw_rainbow를 활용하여 무지개를 마음껏 그려보자(작성할 부분3)
+for j in range(100):
+    draw_rainbow(t, 300, 30, 0, j*10-400)
 
 
 turtle.mainloop()
+
+
 '''
 
 ## [튜플]
@@ -104,8 +66,8 @@ turtle.mainloop()
 ## 연습문제1: 튜플 만들기
 ## 2가지 방법으로 튜플을 선언해보고, 두 변수의 값고 자료형을 출력해보자.
 '''
-numbers1 =              # ()로 튜플 만들기
-numbers2 =              # ()없이 튜플 만들기
+numbers1 = (1,2,3,4,5)# ()로 튜플 만들기
+numbers2 = 5,8,9,7,6# ()없이 튜플 만들기
 print(numbers1, type(numbers1))
 print(numbers2, type(numbers2))
 '''
@@ -113,10 +75,10 @@ print(numbers2, type(numbers2))
 ## 선언시 ,(쉽표)를 넣지 않은 경우와 쉼표를 넣어 변수를 만들고, 변수들의 값과 자료형을 비교해보자.
 ## ※ 결과를 비교해보는 것이 중요!!
 '''
-num1 =          # ()로 만든 경우
-num2 =          # (,)로 만든 경우
-num3 =          # 숫자 1개만 넣어준 경우
-num4 =          # 숫자, 로 만들어준 경우
+num1 = (10)         # ()로 만든 경우
+num2 = (10,)         # (,)로 만든 경우
+num3 = 10         # 숫자 1개만 넣어준 경우
+num4 = 10         # 숫자, 로 만들어준 경우
 print("num1: ", num1, type(num1))
 print("num2: ", num2, type(num2))
 print("num3: ", num3, type(num3))
@@ -125,35 +87,36 @@ print("num4: ", num4, type(num4))
 ## 연습문제3: 튜플 ↔ 리스트로 변환
 ## : tuple을 만들고 이를 list로 변환 후 값과 자료형을 출력한 후, 이를 다시 튜플로 바꾸어 같은 과정을 반복해보자.
 '''
-numbers = 
-numbers =                          # 튜플을 list로 변환하기
+numbers = (1,2,3,4,5,6)
+numbers = list(numbers)                         # 튜플을 list로 변환하기
 print(numbers, type(numbers))
-numbers =                          # 다시 list를 tuple로 변환해주기 
+numbers = tuple(numbers)                         # 다시 list를 tuple로 변환해주기
 print(numbers, type(numbers))
 '''
 ## 연습문제4: 패킹과 언패킹 그리고 a, b 값 바꾸기
 ## 4-1) 패킹과 언패킹을 하여 자료형을 출력해보자.
 ## 4-2) 패킹 언패킹 개념을 활용하여 a, b의 값 바꾸어보자
 ## ※ 결과를 확인하는 것이 중요!!
-'''
+
 # 패킹
-a = 
-b = 
-<code 작성>     # numbers로 a,b를 패킹해주기 
+a = 11
+b = 22
+numbers = a, b     # numbers로 a,b를 패킹해주기
 print("numbers:", numbers, type(numbers))   # 결과확인(데이터 값, 자료형 확인)
 
 # 언패킹
-<code 작성>      # numbers에 포함된 숫자를 c, d로 언패킹해주기 
+c, s = numbers
+c, d = numbers      # numbers에 포함된 숫자를 c, d로 언패킹해주기
 print("c: ", c, type(c))
 print("d: ", d, type(d), end='\n\n')        # 결과확인(데이터 값, 자료형 확인)
 
 # 응용: a, b의 값 바꿔주기
 print("a: ", a)
 print("b: ", b)
-<code 작성>       # a와 b의 값을 바꿔주기 (패킹&언패킹 응용)         
+b, a = a, b   # a와 b의 값을 바꿔주기 (패킹&언패킹 응용)
 print("a: ", a)     # 결과 확인
 print("b: ", b)
-'''
+
 
 ## 연습문제5: 튜플과 관련된 함수
 ## ※ 결과 확인이 중요!!
