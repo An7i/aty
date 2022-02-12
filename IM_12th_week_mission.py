@@ -21,7 +21,7 @@
 # for i in range(T):
 #     # step1) 각 케이스마다 평균 구하기
 #     avg = sum(scores[i]) / N[i]
-#
+#N
 #     # step2) 평균이 넘는 사람 수 세기
 #     count = 0
 #     for score in scores[i]:
