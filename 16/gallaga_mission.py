@@ -31,18 +31,18 @@ class Sprite:
         self.dy = 0
 
     # 스프라이트의 가로 길이 반환 메소드(getWidth())
-    def getwidth(self):
-        return self.img.Width()
+    def getWidth(self):
+        return self.img.width()
 
 
     # 스프라이트의 세로 길이 반환 메서드(getHeight())
-    def getwidth(self):
-        return self.img.Height()
+    def getHeight(self):
+        return self.img.height()
 
 
     # 스프라이트를 화면에 그리기(draw())
     def draw(self, g):
-        g.create_image(self.x, self.y, image__= self.img)
+        g.create_image(self.x, self.y, image  = self.img)
 
 
     # 스프라이트를 움직이는 메소드(move())
@@ -76,15 +76,15 @@ class Sprite:
 
 
     # y를 반환하는 접근자 메소드(getY())
-    def getX(self):
+    def getY(self):
         return self.y
 
 
     # 다른 스프라이트와의 충돌 여부를 계산한다. 충돌이면 true를 반환한다.(checkCollision())
-    def checkcollision(self, other):
+    def checkCollision(self, other):
         p1x = self.x
         p1y = self.y
-        p2x = self.x + self.getwidth()
+        p2x = self.x + self.getWidth()
         p2y = self.y + self.getHeight()
 
         p3x = other.x
@@ -156,9 +156,9 @@ class ShotSprite(Sprite):
     def __init__(self, game, image, x, y):
         super().__init__(image, x, y)
         self.game = game
-        self.dy = -20
-        self.hit_sound = pygame.mixer.Sound('C:\Pycharm_aty\16\sound\hit_sound.mp3')
-        self.shot_sound = pygame.mixer.Sound('C:\Pycharm_aty\16\sound\shot_sound.mp3')
+        self.dy = -1
+        self.hit_sound = pygame.mixer.Sound('.\sound\hit_sound.mp3')
+        self.shot_sound = pygame.mixer.Sound('.\sound\shot_sound.mp3')
         self.shot_sound.play()
 
     # 화면을 벗어나면 객체를 리스트에서 삭제한다.(move())
@@ -189,7 +189,7 @@ class GalagaGame():
     def keyUp(self, event):
         self.starship.setDy(-10)
 
-    def keydown(self, event):
+    def keyDown(self, event):
         self.starship.setDy(+10)
 
     def keyLeft(self, event):
@@ -209,7 +209,7 @@ class GalagaGame():
         self.sprites.append(self.starship)
         for y in range(0,2):
             for x in range(0,12):
-                alien = AlienSprite(self, self.alienImage, 100+x+50, 50+7+30)
+                alien = AlienSprite(self, self.alienImage, 100+x*50, 50+y*30)
                 self.sprites.append(alien)
 
     def __init__(self, master):
@@ -217,9 +217,9 @@ class GalagaGame():
         self.sprites = []
         self.canvas = Canvas(master, width=800, height = 600)
         self.canvas.pack()
-        self.shotImage = PhotoImage(file = "C:\Pycharm_aty\16\image\fire.png")
-        self.shipImage = PhotoImage(file="C:\Pycharm_aty\16\image\starship.png")
-        self.alienImage = PhotoImage(file="C:\Pycharm_aty\16\image\alien.png")
+        self.shotImage = PhotoImage(file = "./image/fire.png")
+        self.shipImage = PhotoImage(file="./image/starship.png")
+        self.alienImage = PhotoImage(file="./image/alien.png")
         self.running = True
         self.initSprites()
 
@@ -229,9 +229,9 @@ class GalagaGame():
         master.bind("<Right>", self.keyRight)
         master.bind("<Escape>", self.keyESC)
         master.bind("<space>", self.keySpace)
-        master.bind("<Return>", startGame)
-        self.shot_sound = pygame.mixer.Sound('C:\Pycharm_aty\16\sound\shot_sound.mp3')
-        self.shot_sound = pygame.mixer.Sound('C:\Pycharm_aty\16\sound\start_sound.mp3')
+        master.bind("<Return>", self.startGame)
+        self.start_sound = pygame.mixer.Sound('./sound/shot_sound.mp3')
+        self.start_sound = pygame.mixer.Sound('./sound/start_sound.mp3')
 
 
     # startGame() 메서드: 게임시작 메서드(Enter키의 이벤트 핸들러)
@@ -249,47 +249,44 @@ class GalagaGame():
             del sprite
     # fire() 메서드: 포탄 발사
     def fire(self):
-        shot = ShotSprite(self, self.shotImage, self.starship)
-    
+        shot = ShotSprite(self, self.shotImage, self.starship.getX()+28, self.starship.getY()-30)
+        self.sprites.append(shot)
+
+    def paint(self):
+        self.canvas.delete(ALL)
+        self.canvas.create_rectangle(0,0,800,600, fill="black")
+        for sprite in self.sprites:
+            sprite.draw(self.canvas)
+
+    def gameLoop(self):
+        for sprite in self.sprites:
+            sprite.move()
+
+        for me in self.sprites:
+            for other in self.sprites:
+                if me != other:
+                    if me.checkCollision(other):
+                        me.handleCollision(other)
+                        other.handleCollision(me)
+
+        self.paint()
 
 
 
-    # paint() 메서드: 화면 그리기
-    
-    
-
-
-
-
-
-    # gameLoop() 메서드: 게임 루프
-        # 1. 스프라이트들이 움직이도록 설정(move)
-        
-        
-
-        # 2. 스프라이트 리스트 안의 객체끼리의 충돌을 검사한다.(collision)
-        
-        
-
-
-
-
-
-        # 3. 배경그리기(paint // gameloop가 실행될 때마다 그려 마치 움직이는 것처럼 보이게 함.)
-        
-
-        # 4. 게임 동작 여부를 확인하여 True일때, 10ms 간격으로 self.gameLoop를 실행시킨다.(gameLoop)
-        # after 명령: 일정 시간이 지난 후에 특정 함수 또는 메서드를 실행시킨다.
-
-
-
+        if self.running:
+            self.master.after(10, self.gameLoop)
 
 
 # main문
 if __name__ == "__main__":
-    pass                # main문 작성시 지워주세요.
-    # Tk() 객체 생성
-    # 제목 설정
+    root = Tk()                # main문 작성시 지워주세요.
+    root.title("Galaga Game")
+    pygame.init()
+
+    g = GalagaGame(root)
+    g.start_sound.play()
+    g.gameLoop()
+    root.mainloop()
 
     # GalagaGame 객체 생성
     # gameLoop() 함수를 호출
